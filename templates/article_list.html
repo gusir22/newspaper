@@ -8,16 +8,28 @@
         <br />
         <div class="card">
             <div class="card-header">
-                <span class="font-weight-bold">{{ article.title }}</span> &middot;
+                <span class="font-weight-bold"><a href="{% url 'article_detail' article.pk %}">{{ article.title }}
+                </a></span> &middot;
                 <span class="text-muted">by {{ article.author }} |
                 {{ article.date|date:"D, F j, Y - h:i A" }}</span>
             </div>
             <div class="card-body">
-                {{ article.body }}
+                {{ article.body_preview }}
             </div>
             <div class="card-footer text-center text-muted">
+                {% if user == article.author %}
                 <a href="{% url 'article_edit' article.pk %}">Edit</a> |
                 <a href="{% url 'article_delete' article.pk %}">Delete</a>
+                {% endif %}
+
+                {% for comment in article.comments.all %}
+                    <p>
+                        <span class="font-weight-bold">
+                            {{ comment.author }} &middot;
+                        </span>
+                        {{ comment }}
+                    </p>
+                {% endfor %}
             </div>
         </div>
     {% endfor %}
