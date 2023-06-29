@@ -17,6 +17,7 @@
         <p><a href="{% url 'article_edit' article.pk %}">Edit</a> |
           <a href="{% url 'article_delete' article.pk %}">Delete</a></p>
     {% endif %}
+    <p><a href="{% url 'comment_new' article.pk %}">Add Comment</a></p>
     <p>Back to <a href="{% url 'article_list' %}">All Articles</a>.</p>
 
     <hr>
@@ -24,9 +25,13 @@
     {% for comment in article.comments.all %}
         <p>
             <span class="font-weight-bold">
-                {{ comment.author }} &middot;
+                {{ comment.author }} &middot; {{ comment.date|date:"F j, Y" }}
             </span>
             {{ comment }}
         </p>
+        {% if user == comment.author %}
+            <p><a href="{% url 'comment_edit' comment.pk %}">Edit</a> |
+            <a href="{% url 'comment_delete' comment.pk %}">Delete</a></p>
+        {% endif %}
     {% endfor %}
 {% endblock content %}
